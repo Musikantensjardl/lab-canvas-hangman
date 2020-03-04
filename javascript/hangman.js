@@ -17,7 +17,7 @@ return this.words[randomPos]
   }
 
   checkIfLetter(keyCode) {
-if (keyCode <= 90 && keyCode >=65) {
+if (keyCode.toLowerCase() != keyCode.toUpperCase()) {
   return true
 } else {return false}
   }
@@ -35,7 +35,7 @@ this.guessedLetters += letter
   addWrongLetter(letter) {
     this.letters.push(letter)
 this.errorsLeft--
-console.log(this.errorsLeft)
+
   }
 
   checkGameOver() {
@@ -66,12 +66,15 @@ hangmanCanvas.createBoard()
 }
 
 document.addEventListener('keydown', event => {
-
-if (hangman.secretWord.includes(event.key)) {
+if (hangman.checkGameOver()) {alert(`Game Over. The correct word was "${hangman.secretWord}"`) }
+if (!hangman.checkIfLetter(event.key)) {alert("please enter letter")}
+else if (hangman.secretWord.includes(event.key)) {
 hangmanCanvas.writeCorrectLetter(event.key) }
+
 else {
   hangmanCanvas.writeWrongLetter(event.key, this.errorsLeft) 
 hangman.addWrongLetter(event.key)
+hangmanCanvas.drawHangman(hangman.errorsLeft)
 }
 
 
